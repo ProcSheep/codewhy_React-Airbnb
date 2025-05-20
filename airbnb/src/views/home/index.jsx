@@ -1,34 +1,36 @@
-import hyRequest from '@/service'
 import React, { memo, useEffect, useState } from 'react'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+
+import { HomeWrapper } from './style'
+import { fetchHomeDataAction } from '@/store/modules/home'
+import HomeBanner from './c-cpns/home-banner'
+import HomeSectionV1 from './c-cpns/home-section-v1'
+
 
 const home = memo(() => {
-  // 简单使用,后面的网络请求会融入到redux中
-  // 定义状态 
-  const [highscore, setHightScore] = useState({})
+  /** 从redux中获取数据 */
+  const { goodPriceInfo,highScoreInfo } = useSelector((state) => ({
+    goodPriceInfo: state.home.goodPriceInfo,
+    highScoreInfo: state.home.highScoreInfo
+  }), shallowEqual)
 
-  // 网络请求代码,类似Mount
+  /** 派发事件: 发送网络请求,不传参数 */
+  const dispatch = useDispatch()
   useEffect(() => {
-    hyRequest.get({ url: '/home/highscore' }).then(res => {
-      // console.log(res)
-      setHightScore(res)
-    })
+    dispatch(fetchHomeDataAction())
   }, [])
 
   return (
-    <div>home
-      {/* 简单测试 */}
-      <h2>{highscore.title}</h2>
-      <h4>{highscore.subtitle}</h4>
-      <ul>
-        {/* 异步初始没有数据,使用可选链 */}
-        {
-          highscore?.list?.map(item => {
-            return <li key={item.id}>{item.name}</li>
-          })
-        }
-      </ul>
-    </div>
+    <HomeWrapper>
+      {/* 轮播图 */}
+      <HomeBanner />
+      <div className='content'>
+        <HomeSectionV1 infoData={goodPriceInfo}/>
+        <HomeSectionV1 infoData={highScoreInfo}/>
+      </div>
+    </HomeWrapper>
   )
 })
 
 export default home
+

@@ -8,7 +8,9 @@ const resolve = pathName => path.resolve(__dirname, pathName)
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react()
+  ],
   resolve: {
     alias: {
       '@': resolve("src"),
