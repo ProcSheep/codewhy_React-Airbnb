@@ -1,5 +1,5 @@
 // 这种转化麻烦的函数可以直接从standoverflow上面找,style转obj
-function styleStrToObj(str){
+export const styleStrToObj = function(str){
   // 比如对于font-size->fontSize
   const obj = {}, s = str.toLowerCase().replace(/-(.)/g, function (m, g) {
     return g.toUpperCase();
@@ -8,5 +8,3 @@ function styleStrToObj(str){
       obj[s[i].replace(/\s/g,"")] = s[i+1].replace(/^\s+|\s+$/g,"");
   return obj;
 }
-
-export default styleStrToObj

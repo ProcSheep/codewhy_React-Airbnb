@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 
 export const ItemWrapper = styled.div`
-  width: 25%;
+  flex-shrink: 0;
+  width: ${props => props.$itemWidth};
   padding: 8px;
   box-sizing: border-box;
 
@@ -32,7 +33,7 @@ export const ItemWrapper = styled.div`
     font-size: 12px;
     font-weight: 700;
     /* 接受服务器传递的动态文字颜色 */
-    color: ${props => props.verifyColor};
+    color: ${props => props.$verifyColor};
   }
 
   .name {

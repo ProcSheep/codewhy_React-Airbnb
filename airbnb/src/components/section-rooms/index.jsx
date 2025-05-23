@@ -6,12 +6,12 @@ import RoomItem from '@/components/room-item'
 
 const SectionRooms = memo((props) => {
   // 防止异步没有数据,先初始化; 或者?.
-  const { roomList = [] } = props
+  const { roomList = [], itemWidth } = props
   return (
     <RoomWrapper>
       {
         roomList.slice(0, 8).map(item => {
-          return <RoomItem itemData={item} key={item.id} />
+          return <RoomItem itemData={item} itemWidth={itemWidth} key={item.id} />
         })
       }
     </RoomWrapper>

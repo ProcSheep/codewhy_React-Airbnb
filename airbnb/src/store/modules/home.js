@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getHomeGoodPriceData, getHomeHighscoreData } from "@/service";
+import { getHomeDiscountData, getHomeGoodPriceData, getHomeHighscoreData,getHomeLongForData,getHomePlusData,getHotRecommendData } from "@/service";
 
 /** 异步请求数据的函数,记得导出 */
 /** 多个异步请求,不建议堆叠await,阻塞显示,同时不建议写多个createAsyncThunk,维护困难
@@ -13,13 +13,29 @@ export const fetchHomeDataAction = createAsyncThunk('fetchHomeData', async (payl
   getHomeHighscoreData().then(res => {
     dispatch(changeHighScoreInfoAction(res)) 
   })
+  getHomeDiscountData().then(res => {
+    dispatch(changeDiscountInfoAction(res))
+  })
+  getHotRecommendData().then(res => {
+    dispatch(changeRecommendInfoAction(res))
+  })
+  getHomeLongForData().then(res => {
+    dispatch(changeLongForInfoAction(res))
+  })
+  getHomePlusData().then(res => {
+    dispatch(changePlusInfoAction(res))
+  })
 })
 
 const homeSlice = createSlice({
   name: 'home',
   initialState: {
     goodPriceInfo: {},
-    highScoreInfo: {}
+    highScoreInfo: {},
+    discountInfo: {},
+    recommendInfo: {},
+    longForInfo: {},
+    plusInfo: {}
   },
   reducers: {
     changeGoodPriceInfoAction(state,{payload}){
@@ -27,6 +43,18 @@ const homeSlice = createSlice({
     },
     changeHighScoreInfoAction(state,{payload}){
       state.highScoreInfo = payload
+    },
+    changeDiscountInfoAction(state, {payload}){
+      state.discountInfo = payload
+    },
+    changeRecommendInfoAction(state,{payload}){
+      state.recommendInfo = payload 
+    },
+    changeLongForInfoAction(state, {payload}){
+      state.longForInfo = payload
+    },
+    changePlusInfoAction(state, {payload}){
+      state.plusInfo = payload
     }
   },
   /** 异步修改state数据 */
@@ -48,6 +76,10 @@ const homeSlice = createSlice({
 
 export const {
   changeGoodPriceInfoAction,
-  changeHighScoreInfoAction
+  changeHighScoreInfoAction,
+  changeDiscountInfoAction,
+  changeRecommendInfoAction,
+  changeLongForInfoAction,
+  changePlusInfoAction
 } = homeSlice.actions
 export default homeSlice.reducer

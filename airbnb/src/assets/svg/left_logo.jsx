@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import styleStrToObj from '@/assets/svg/utils'
+import { styleStrToObj } from './utils'
 
 const LeftLogo = memo(() => {
   return (
