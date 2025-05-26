@@ -1,17 +1,82 @@
 import PropTypes from 'prop-types'
-import React, { memo } from 'react'
+import React, { memo, useRef, useState } from 'react'
+import { Carousel } from 'antd';
 import Rating from '@mui/material/Rating';
+import classNames from 'classnames';
 
 import { ItemWrapper } from './style'
+import IconArrowLeft from '@/assets/svg/icon-arrow-left';
+import IconArrowRight from '@/assets/svg/icon-arrow-right';
+import Indicator from '@/base-ui/indicator';
 
 const RoomItem = memo((props) => {
-  const { itemData,itemWidth = '25%' } = props
+  const { itemData, itemWidth = '25%' } = props
+  const [selectIndex, setSelectIndex] = useState(0)
+  const swiperRef = useRef()
+
+  // 没有轮播图,单图html (例如 /home)
+  const pictureElement = (
+    <div className='cover'>
+      <img src={itemData.picture_url} alt="" />
+    </div>
+  )
+  // 有轮播图html (例如 /entire)
+  const swiperElement = (
+    <div className='swiper'>
+      {/* 左右箭头 */}
+      <div className='control'>
+        <div className='btn left' onClick={e => controlClickHandle(false)}>
+          <IconArrowLeft width='30' height='30' />
+        </div>
+        <div className='btn right' onClick={e => controlClickHandle()}>
+          <IconArrowRight width='30' height='30' />
+        </div>
+      </div>
+      {/* indicator自定义指示器 */}
+      <div className='indicator'>
+        <Indicator selectIndex={selectIndex}>
+          {
+            itemData?.picture_urls?.map((item, index) => {
+              return (
+                <div className='item' key={item}>
+                  <span className={classNames("dot", { active: selectIndex === index })}></span>
+                </div>
+              )
+            })
+          }
+        </Indicator>
+      </div>
+      {/* 轮播图 */}
+      <Carousel dots={false} ref={swiperRef}>
+        {
+          itemData?.picture_urls?.map(item => {
+            return (
+              <div className='cover' key={item}>
+                <img src={item} alt="" />
+              </div>
+            )
+          })
+        }
+      </Carousel>
+    </div>
+  )
+
+  /** 事件处理逻辑 */
+  // 1.跳转上一个/下一个面板
+  function controlClickHandle(isRight = true) {
+    isRight ? swiperRef.current.next() : swiperRef.current.prev()
+    let newIndex = isRight ? selectIndex + 1 : selectIndex - 1
+    let length = itemData.picture_urls.length
+    if (newIndex < 0) newIndex = length - 1
+    if (newIndex > length - 1) newIndex = 0
+    setSelectIndex(newIndex)
+  }
+
   return (
     <ItemWrapper $verifyColor={itemData?.verify_info?.text_color || '#39576a'} $itemWidth={itemWidth} >
       <div className='inner'>
-        <div className='cover'>
-          <img src={itemData.picture_url} alt="" />
-        </div>
+        {/* 判断是不是轮播图样式的item,只需判断itemData.picture_urls有没有值 */}
+        { itemData.picture_urls ? swiperElement : pictureElement }
         <div className='desc'>
           {
             itemData.verify_info.messages.join("-")
@@ -19,7 +84,6 @@ const RoomItem = memo((props) => {
         </div>
         <div className='name'>{itemData.name}</div>
         <div className='price'>￥{itemData.price}/晚</div>
-
         <div className='bottom'>
           {/* sx: 设置新的样式覆盖旧的样式 
               precision: 精准度,精确到0.1

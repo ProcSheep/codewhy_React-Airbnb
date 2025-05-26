@@ -48,7 +48,8 @@ export const RightWrapper = styled.div`
       width: 240px;
       background-color: #fff;
       border-radius: 10px;
-      box-shadow: 0 0 4px rgba(0,0,0,.18);     
+      box-shadow: 0 0 4px rgba(0,0,0,.18); 
+      z-index: 99;    
 
       .top, .bottom{
         padding: 10px 0;

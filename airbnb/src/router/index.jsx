@@ -6,6 +6,7 @@ const Home = React.lazy(() => import('@/views/home'))
 const Detail = React.lazy(() => import('@/views/detail'))
 const Entire = React.lazy(() => import('@/views/entire'))
 const NotFound = React.lazy(() => import('@/views/notfound'))
+const Demo = React.lazy(() => import('@/views/demo'))
 
 
 const routes = [
@@ -24,6 +25,10 @@ const routes = [
   {
     path: '/entire',
     element: <Entire />
+  },
+  {
+    path: '/demo',
+    element: <Demo/>
   },
   {
     path: '*',

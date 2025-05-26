@@ -16,6 +16,11 @@ export const changeTotalCountAction = (totalCount) => ({
   totalCount
 })
 
+export const changeIsLoadingAction = (isLoading) => ({
+  type: actionTypes.CHANGE_IS_LOAFING,
+  isLoading
+})
+
 
 export const fetchRoomListAction = () => {
   return async (dispatch,getState) => {
@@ -24,7 +29,10 @@ export const fetchRoomListAction = () => {
      *  点击对应的页数,请求对应页的数据并显示
      */
     const currentPage = getState().entire.currentPage
+    // 请求网络数据前后, 是否正在加载(isLoading)
+    dispatch(changeIsLoadingAction(true))
     const res = await getEntireRoomList(currentPage * 20)
+    dispatch(changeIsLoadingAction(false))
     // 将获取的数据保存进store中
     const roomList = res.list
     const totalCount = res.totalCount
