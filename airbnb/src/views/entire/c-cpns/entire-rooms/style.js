@@ -8,7 +8,7 @@ export const RoomsWrapper = styled.div`
     font-size: 22px;
     font-weight: 700;
     color: #222;
-    margin: 0 0 10px 10px;
+    margin: 130px 0 10px 10px;
   }
 
   .list{

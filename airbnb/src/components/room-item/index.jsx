@@ -10,7 +10,7 @@ import IconArrowRight from '@/assets/svg/icon-arrow-right';
 import Indicator from '@/base-ui/indicator';
 
 const RoomItem = memo((props) => {
-  const { itemData, itemWidth = '25%' } = props
+  const { itemData, itemWidth = '25%', itemClick } = props
   const [selectIndex, setSelectIndex] = useState(0)
   const swiperRef = useRef()
 
@@ -25,10 +25,10 @@ const RoomItem = memo((props) => {
     <div className='swiper'>
       {/* 左右箭头 */}
       <div className='control'>
-        <div className='btn left' onClick={e => controlClickHandle(false)}>
+        <div className='btn left' onClick={e => controlClickHandle(false,e)}>
           <IconArrowLeft width='30' height='30' />
         </div>
-        <div className='btn right' onClick={e => controlClickHandle()}>
+        <div className='btn right' onClick={e => controlClickHandle(true,e)}>
           <IconArrowRight width='30' height='30' />
         </div>
       </div>
@@ -63,17 +63,24 @@ const RoomItem = memo((props) => {
 
   /** 事件处理逻辑 */
   // 1.跳转上一个/下一个面板
-  function controlClickHandle(isRight = true) {
+  function controlClickHandle(isRight = true,event) {
     isRight ? swiperRef.current.next() : swiperRef.current.prev()
     let newIndex = isRight ? selectIndex + 1 : selectIndex - 1
     let length = itemData.picture_urls.length
     if (newIndex < 0) newIndex = length - 1
     if (newIndex > length - 1) newIndex = 0
     setSelectIndex(newIndex)
+    // 阻止事件冒泡
+    event.stopPropagation()
+  }
+
+  // 2.接受传入的跳转函数,如果有传入就执行,没有传入就不执行任何事情
+  function itemClickHandle(){
+    if(itemClick) itemClick(itemData)
   }
 
   return (
-    <ItemWrapper $verifyColor={itemData?.verify_info?.text_color || '#39576a'} $itemWidth={itemWidth} >
+    <ItemWrapper $verifyColor={itemData?.verify_info?.text_color || '#39576a'} $itemWidth={itemWidth} onClick={itemClickHandle}>
       <div className='inner'>
         {/* 判断是不是轮播图样式的item,只需判断itemData.picture_urls有没有值 */}
         { itemData.picture_urls ? swiperElement : pictureElement }

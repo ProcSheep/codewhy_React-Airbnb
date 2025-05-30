@@ -11,7 +11,7 @@ const Indicator = memo((props) => {
   useEffect(() => {
     // 1.获取选中的元素
     const selectItemEl = contentRef.current.children[selectIndex]
-    const itemLeft = selectItemEl.offsetLeft // 获取offsetLeft记得给父元素加定位(relative)
+    const itemLeft = selectItemEl.offsetLeft // 获取offsetLeft记得给父元素i-content加定位(relative)
     const itemWidth = selectItemEl.clientWidth // 选中item宽度
     const contentWidth = contentRef.current.clientWidth // indicator宽度(也是轮播的可视区域)
     const contentScroll = contentRef.current.scrollWidth // 总共可以移动的距离(包含溢出隐藏的部分,即整个轮播长度)

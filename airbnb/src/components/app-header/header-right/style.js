@@ -18,9 +18,10 @@ export const RightWrapper = styled.div`
       margin: 0 5px;
       border-radius: 22px;
       cursor: pointer;
+      color: ${props => props.theme.isAlpha ? "#fff" : props.theme.text.primaryColor};
 
       &:hover{
-      background-color: #f5f5f5;
+      background-color: ${props => props.theme.isAlpha ? "rgba(255,255,255,.2)" : '#f5f5f5'};
       }
     }
   }
